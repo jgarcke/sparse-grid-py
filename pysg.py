@@ -163,7 +163,8 @@ class sparseGrid:
       index = preCurDim + [i,j] + postCurDim
       left  = preCurDim + left  + postCurDim
       right = preCurDim + right + postCurDim
-    else:#this case can only happen in 2D
+    else:
+      #this case can only happen in 2D
       if dim == 0:
         index = [i,j] + node
         left  = left  + node
@@ -172,6 +173,7 @@ class sparseGrid:
         index = node + [i,j]
         left  = node + left 
         right = node + right
+
     #in case we are on the left boundary
     if left[2*dim] == 0:
       if right[2*dim] != 0:
@@ -181,8 +183,8 @@ class sparseGrid:
     else: #normal inner node
       self.gP[tuple(index)].hv -= 0.5*(self.gP[tuple(left)].hv + self.gP[tuple(right)].hv)
   
-  # conversion from nodal to hierarchical basis
   def nodal2Hier(self):
+    """ conversion from nodal to hierarchical basis """
     for i in range(len(self.indices)):
       self.gP[tuple(self.indices[i])].hv = self.gP[tuple(self.indices[i])].fv
     # conversion is done by succesive one-dim conversions
@@ -194,8 +196,8 @@ class sparseGrid:
           for k in range(len(indices)):
             self.nodal2Hier1D(indices[k],i,j,d)
                       
-# compute cross-product of args
 def cross(*args):
+  """ compute cross-product of args """
   ans = []
   for arg in args[0]:
     for arg2 in args[1]:
@@ -208,8 +210,8 @@ def cross(*args):
   
   #return ans
 
-# evaluation of the basis functions in one dimension
 def evalBasis1D(x, basis,interval=None):
+  """ evaluation of the basis functions in one dimension """
   if interval is None:    
     return 1. - abs(x*2**basis[0]-basis[1])
   else:
